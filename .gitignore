@@ -1,9 +1,11 @@
-HELP.md
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+
+###QueryDls
+/src/main/generated
 
 ### STS ###
 .apt_generated
