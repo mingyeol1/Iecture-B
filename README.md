@@ -12,7 +12,8 @@
 
 RED 
 
-![ERD]([https://github.com/mingyeol1/Iecture-B/blob/main/rootimages/ERD.png](https://github.com/mingyeol1/Iecture-B/blob/main/rootimages/ERD.png))
+![ERD](https://github.com/mingyeol1/Iecture-B/blob/main/rootimages/ERD.png)
+
 
 
 
