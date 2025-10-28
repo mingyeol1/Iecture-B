@@ -2,9 +2,11 @@ package com.dev.lecture_B.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Board extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +20,31 @@ public class Board extends BaseEntity {
     private BigBoard bigBoard;
     private String title;
     private String content;
-    private String writer;
     private String videoURL;
     private String imageURL;
+
+    public Board(Member member, BigBoard bigBoard, String title, String content, String videoURL, String imageURL) {
+        this.member = member;
+        this.bigBoard = bigBoard;
+        this.title = title;
+        this.content = content;
+        this.videoURL = videoURL;
+        this.imageURL = imageURL;
+    }
+
+    //게시글을 수정하는 메서드
+    public void changeBoard(String title, String content,String videoURL,String imageURL){
+        if (title != null){
+            this.title = title;
+        }
+        if (content != null){
+            this.content = content;
+        }
+        if (videoURL != null){
+            this.videoURL = videoURL;
+        }
+        if (imageURL != null){
+            this.imageURL = imageURL;
+        }
+    }
 }
