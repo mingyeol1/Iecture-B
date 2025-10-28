@@ -14,9 +14,9 @@ public class BigBoard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String boardName;
+    private String name;
 
-    public BigBoard(String boardName){
-        this.boardName = boardName;
+    public BigBoard(String name){
+        this.name = name;
     }
 }
