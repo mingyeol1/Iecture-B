@@ -1,5 +1,6 @@
 package com.dev.lecture_B;
 
+import com.dev.lecture_B.controller.BigBoardController;
 import com.dev.lecture_B.entity.*;
 import com.dev.lecture_B.repository.BigBoardRepository;
 import com.dev.lecture_B.repository.BoardRepository;
@@ -41,6 +42,8 @@ public class CrudTest {
 
 
     JPAQueryFactory queryFactory;
+
+
 
     @Test
     public void TestCRUD(){
@@ -102,8 +105,5 @@ public class CrudTest {
         assertThat(changeBoard.getImageURL()).isEqualTo("URL2");
         assertThat(changeBoard.getVideoURL()).isEqualTo("URL1");
         assertThat(changeReply.getContent()).isEqualTo("답글 수정입니다.");
-
-
-
     }
 }
