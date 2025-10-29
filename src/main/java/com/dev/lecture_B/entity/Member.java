@@ -14,10 +14,8 @@ public class Member extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
     private String nickname;
     private String password;
-    @Column(unique = true)
     private String email;
 
     private Set<RoleSet> RoleSet = new HashSet<>();

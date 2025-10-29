@@ -66,7 +66,7 @@ public class MemberService {
         //데이터 베이스에 기존에 사용중인 이메일 및 닉네임이 있나 확인.
         //변경하려는 값이 현재 값과 다를때만 중복 검사.
         if (!member.getNickname().equals(nickname) && existNickname){ throw new IllegalArgumentException("이미 존재하는 닉네임입니다");}
-        if (member.getEmail().equals(email) && existEmail){ throw new IllegalArgumentException("이미 존재하는 이메일입니다");}
+        if (!member.getEmail().equals(email) && existEmail){ throw new IllegalArgumentException("이미 존재하는 이메일입니다");}
 
         //save를 사용하지 않고 더티체킹으로 저장 될 수 있도록 만듦
         member.changeMember(nickname, email);
