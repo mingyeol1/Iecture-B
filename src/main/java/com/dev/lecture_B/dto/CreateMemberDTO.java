@@ -9,7 +9,6 @@ public class CreateMemberDTO {
     private Long id;
     private String nickname;
     private String email;
-    private String role;
     private String password;
     private boolean del;
 

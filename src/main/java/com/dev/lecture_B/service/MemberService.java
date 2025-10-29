@@ -57,15 +57,16 @@ public class MemberService {
         //유저의 값이 존재하는지 먼저 확인
         Optional<Member> findMember = memberRepository.findById(id);
 
-        if (findMember.isPresent()){}
-
-        Member member = findMember.get();
+        Member member = findMember.orElseThrow(
+                () -> new NoSuchElementException("존재하지 않는 회원입니다.")
+        );
         boolean existNickname = memberRepository.existsByNickname(nickname);
         boolean existEmail = memberRepository.existsByEmail(email);
 
         //데이터 베이스에 기존에 사용중인 이메일 및 닉네임이 있나 확인.
-        if (existNickname){ throw new IllegalArgumentException("이미 존재하는 닉네임입니다");}
-        if (existEmail){ throw new IllegalArgumentException("이미 존재하는 이메일입니다");}
+        //변경하려는 값이 현재 값과 다를때만 중복 검사.
+        if (!member.getNickname().equals(nickname) && existNickname){ throw new IllegalArgumentException("이미 존재하는 닉네임입니다");}
+        if (member.getEmail().equals(email) && existEmail){ throw new IllegalArgumentException("이미 존재하는 이메일입니다");}
 
         //save를 사용하지 않고 더티체킹으로 저장 될 수 있도록 만듦
         member.changeMember(nickname, email);

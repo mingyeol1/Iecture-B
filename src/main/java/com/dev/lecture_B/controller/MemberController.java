@@ -21,7 +21,7 @@ public class MemberController {
     public ResponseEntity<?> signUp(@RequestBody CreateMemberDTO dto){
         memberService.createMember(dto);
 
-        return ResponseEntity.ok(200);
+        return ResponseEntity.status(200).build();
     }
 
     //추후 스프링 시큐리티 설정 후 바꿀 예정
@@ -33,8 +33,9 @@ public class MemberController {
         return ResponseEntity.ok().body(findMember);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<?> updateMember(@RequestBody MemberRequestDTO dto){
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateMember(@PathVariable Long id
+                                            ,@RequestBody MemberRequestDTO dto){
         memberService.changeMember(dto.getId(), dto.getNickname() , dto.getEmail());
 
         return ResponseEntity.ok(200);
