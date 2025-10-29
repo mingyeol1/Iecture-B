@@ -1,9 +1,6 @@
 package com.dev.lecture_B.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,8 +14,10 @@ public class Member extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nickName;
+    @Column(unique = true)
+    private String nickname;
     private String password;
+    @Column(unique = true)
     private String email;
 
     private Set<RoleSet> RoleSet = new HashSet<>();
@@ -29,16 +28,16 @@ public class Member extends BaseEntity{
         this.RoleSet.add(role);
     }
 
-    public Member(String nickName, String password, String email) {
-        this.nickName = nickName;
+    public Member(String nickname, String password, String email) {
+        this.nickname = nickname;
         this.password = password;
         this.email = email;
         this.del = false;   //기본값은 false로 설정 추후 아이디 삭제할 때 true로 변경
     }
 
-    public void changeMember(String nickName, String email){
-        if (nickName != null){
-            this.nickName =nickName;
+    public void changeMember(String nickname, String email){
+        if (nickname != null){
+            this.nickname =nickname;
         }
         if (email != null){
             this.email = email;
