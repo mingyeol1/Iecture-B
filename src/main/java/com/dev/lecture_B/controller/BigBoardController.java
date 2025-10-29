@@ -34,6 +34,6 @@ public class BigBoardController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteBigBoard(@PathVariable Long id){
         bigBoardService.deleteBigBoard(id);
-        return ResponseEntity.ok().body(200 + " 삭제 완료");
+        return ResponseEntity.ok().body(204);
     }
 }

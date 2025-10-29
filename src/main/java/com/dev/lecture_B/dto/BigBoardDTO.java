@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class BigBoardDTO {
+    private Long id;
     private String name;
 
     public BigBoardDTO(String name) {
