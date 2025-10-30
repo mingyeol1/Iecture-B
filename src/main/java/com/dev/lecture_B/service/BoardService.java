@@ -43,7 +43,11 @@ public class BoardService {
         BigBoard bigBoard = bigBoardId.orElseThrow(() -> new NoSuchElementException("존재하지 않는 게시판입니다."));
 
         List<String> fileNames = new ArrayList<>();
-        List<MultipartFile> files = dto.getImageURL();
+//        List<MultipartFile> files = dto.getImageURL();
+        //파일이 빈값이 있으면 에러가 나므로 Optional 처리
+        List<MultipartFile> files = Optional.ofNullable(dto.getImageURL()).orElse(Collections.emptyList());
+        Path uploadDir = Paths.get(imagesURL);
+        Files.createDirectories(uploadDir);
 
         //파일의 기존이름과 UUID를 합쳐 경로에 저장.
         for (MultipartFile file : files){
@@ -52,9 +56,12 @@ public class BoardService {
             //UUID를 합친 파일의 이름
             String savedName = UUID.randomUUID() + "_" + originalName;
             //파일들이 저장될 경로.
-            Path savePath = Paths.get(imagesURL, savedName);
+            //해당 코드는 파일이 미리 만들어져 있지 않으면 에러가 나므로 주석처리. 나는 직접 파일을 만들었었음.
+//            Path savePath = Paths.get(imagesURL, savedName);
+            Path savePath = uploadDir.resolve(savedName);
             //file.getInputStream() < 읽어올 파일 데이터  savePath < 저장될 위치.
             Files.copy(file.getInputStream(), savePath);
+
 
             //List형태로 저장
             fileNames.add(savedName);
