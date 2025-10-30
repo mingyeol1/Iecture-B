@@ -9,10 +9,12 @@
 - **백엔드**: Spring Boot, Spring Data JPA , QueryDSL
 - **데이터베이스**: MySQL
 - **인증 및 보안**: Spring Security
+- **Tool** : coderabbitAi, IntellJ Community,VS Code, GitHub
 
 RED 
 
 ![ERD](https://github.com/mingyeol1/Iecture-B/blob/main/rootimages/ERD.png)
+
 
 
 
