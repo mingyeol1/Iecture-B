@@ -1,7 +1,7 @@
 ﻿# 강의 사이트
 
 # 개요 
-### QueryDsl / JPA DATA를 공부하기 위한 강의사이트 제작
+### QueryDsl / JPA DATA를 공부하기 위한 사이트 제작
 
 ## 기술 스택
 
@@ -13,6 +13,7 @@
 RED 
 
 ![ERD](https://github.com/mingyeol1/Iecture-B/blob/main/rootimages/ERD.png)
+
 
 
 
