@@ -26,7 +26,7 @@ public class BigBoardService {
 
     public List<BigBoardDTO> findByAll(){
         List<BigBoard> all = bigBoardRepository.findAll();
-        return all.stream().map(bigBoard -> new BigBoardDTO(bigBoard.getName()))
+        return all.stream().map(bigBoard -> new BigBoardDTO(bigBoard.getId(), bigBoard.getName()))
                 .collect(Collectors.toList());
     }
 
