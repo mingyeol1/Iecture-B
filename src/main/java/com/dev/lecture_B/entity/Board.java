@@ -4,6 +4,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+
+import java.util.ArrayList;
+
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -21,9 +26,9 @@ public class Board extends BaseEntity {
     private String title;
     private String content;
     private String videoURL;
-    private String imageURL;
+    private List<String> imageURL = new ArrayList<>();
 
-    public Board(Member member, BigBoard bigBoard, String title, String content, String videoURL, String imageURL) {
+    public Board(Member member, BigBoard bigBoard, String title, String content, String videoURL, List<String> imageURL) {
         this.member = member;
         this.bigBoard = bigBoard;
         this.title = title;
@@ -33,7 +38,7 @@ public class Board extends BaseEntity {
     }
 
     //게시글을 수정하는 메서드
-    public void changeBoard(String title, String content,String videoURL,String imageURL){
+    public void changeBoard(String title, String content,String videoURL,List<String> imageURL){
         if (title != null){
             this.title = title;
         }

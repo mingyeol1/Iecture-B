@@ -9,7 +9,8 @@ public class BigBoardDTO {
     private Long id;
     private String name;
 
-    public BigBoardDTO(String name) {
+    public BigBoardDTO(Long id,String name) {
+        this.id = id;
         this.name = name;
     }
 }
