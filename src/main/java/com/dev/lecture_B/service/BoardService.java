@@ -31,6 +31,7 @@ public class BoardService {
     private final MemberRepository memberRepository;
     private final BigBoardRepository bigBoardRepository;
 
+    //파일이 저장될 URL
     @Value("${file.upload-dir}")
     private String imagesURL;
 
@@ -74,15 +75,51 @@ public class BoardService {
         boardRepository.save(board);
     }
 
-//    public void changeBoard(BoardDTO dto) throws IOException{
-//        Optional<Board> findBoard = boardRepository.findById(dto.getId());
-//
-//        Board board = findBoard.orElseThrow(() -> new NoSuchElementException("존재하지 않는 게시글 입니다."));
-//
-//        board.changeBoard(dto.getTitle(), dto.getContent(), dto.getVideoURL(), dto.getImageURL());
-//
-//
-//    }
+    public BoardResponseDTO changeBoard(BoardDTO dto) throws IOException {
+
+        Board board = boardRepository.findById(dto.getId())
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 게시글입니다."));
+
+        // 기존 이미지 리스트 복사
+        List<String> updatedImages = new ArrayList<>(board.getImageURL());
+
+        // 새 이미지 업로드 처리
+        if (dto.getImageURL() != null && !dto.getImageURL().isEmpty()) {
+
+            Files.createDirectories(Paths.get(imagesURL));
+
+            for (MultipartFile file : dto.getImageURL()) {
+                if (file.isEmpty()) continue;
+
+                String originalName = file.getOriginalFilename();
+                String savedName = UUID.randomUUID() + "_" + originalName;
+
+                Path savePath = Paths.get(imagesURL, savedName);
+                Files.copy(file.getInputStream(), savePath);
+
+                updatedImages.add(savedName);
+            }
+        }
+
+        //기존에 있던 이미지를 다 삭제
+        board.getImageURL().clear();
+        //새로운 이미지로 다시 채워넣음
+        board.getImageURL().addAll(updatedImages);
+        // 엔티티 내용 수정
+        board.changeBoard(dto.getTitle(), dto.getContent(), dto.getVideoURL(), updatedImages);
+
+
+        // 응답용 DTO 반환
+        return new BoardResponseDTO(
+                board.getId(),
+                board.getMember().getId(),
+                board.getBigBoard().getId(),
+                board.getTitle(),
+                board.getContent(),
+                board.getVideoURL(),
+                board.getImageURL()
+        );
+    }
 
     public BoardResponseDTO findBoardOne(Long id){
         Optional<Board> findBoard = boardRepository.findById(id);
@@ -104,6 +141,7 @@ public class BoardService {
         //경로에 파일이 있으면 그 파일도 삭제할 수 있도록 만듦
         for (String fileName : board.getImageURL()) {
             Path path = Paths.get(imagesURL, fileName);
+            //경로에 파일이 있으면 삭제처리
             Files.deleteIfExists(path);
         }
 

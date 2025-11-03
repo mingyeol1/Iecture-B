@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -15,7 +16,10 @@ public class BoardDTO {
     private String title;
     private String content;
     private String videoURL;
-    private List<MultipartFile> imageURL;
+
+    //새로 추가될 이미지
+    private List<MultipartFile> imageURL = new ArrayList<>();
+    private List<String> remainImages; // 유지할 이미지
 
     public BoardDTO(Long memberId, Long bigBoardId, String title, String content, String videoURL, List<MultipartFile> imageURL) {
         this.memberId = memberId;
