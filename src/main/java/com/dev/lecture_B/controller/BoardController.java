@@ -46,6 +46,17 @@ public class BoardController {
         return ResponseEntity.ok().body(dto);
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<?> update(@ModelAttribute BoardDTO dto){
+        try {
+            BoardResponseDTO boardResponseDTO = boardService.changeBoard(dto);
+            return ResponseEntity.ok(boardResponseDTO);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteBoard(@PathVariable Long id){

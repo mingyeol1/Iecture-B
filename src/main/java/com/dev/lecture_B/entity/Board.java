@@ -26,6 +26,13 @@ public class Board extends BaseEntity {
     private String title;
     private String content;
     private String videoURL;
+
+    @ElementCollection
+    @CollectionTable(
+            name = "board_images",
+            joinColumns = @JoinColumn(name = "board_id")
+    )
+    @Column(name = "image_url")
     private List<String> imageURL = new ArrayList<>();
 
     public Board(Member member, BigBoard bigBoard, String title, String content, String videoURL, List<String> imageURL) {
@@ -47,9 +54,6 @@ public class Board extends BaseEntity {
         }
         if (videoURL != null){
             this.videoURL = videoURL;
-        }
-        if (imageURL != null){
-            this.imageURL = imageURL;
         }
     }
 }

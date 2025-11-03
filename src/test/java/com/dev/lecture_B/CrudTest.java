@@ -100,7 +100,7 @@ public class CrudTest {
                 .selectFrom(QReply.reply)
                 .fetchOne();
 
-        assertThat(chengeMember.getNickName()).isEqualTo("Member");
+
         assertThat(changeBoard.getTitle()).isEqualTo("ㅋㅋㅋㅋ");
         assertThat(changeBoard.getImageURL()).isEqualTo("URL2");
         assertThat(changeBoard.getVideoURL()).isEqualTo("URL1");

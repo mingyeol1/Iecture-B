@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -15,7 +16,7 @@ public class BoardResponseDTO {
     private String title;
     private String content;
     private String videoURL;
-    private List<String> imageURL;
+    private List<String> imageURL = new ArrayList<>();
 
     public BoardResponseDTO(Long id, Long memberId, Long bigBoardId, String title, String content, String videoURL, List<String> imageURL) {
         this.id = id;

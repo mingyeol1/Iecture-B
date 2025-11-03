@@ -6,6 +6,8 @@ build/
 
 ###QueryDls
 /src/main/generated
+### Local images
+/src/main/resources/static
 
 ### STS ###
 .apt_generated
