@@ -51,7 +51,7 @@ public class ReplyService {
         Page<Reply> list = replyRepository.findAll(pageable);
 
         return list.map(reply -> new ReplyResponseDTO(reply.getId(),
-                                                            reply.getMember().getId(),
+                                                            reply.getBoard().getId(),
                                                             reply.getMember().getNickname(),
                                                             reply.getContent()));
     }
