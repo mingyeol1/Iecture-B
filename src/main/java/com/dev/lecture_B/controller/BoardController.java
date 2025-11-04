@@ -19,11 +19,11 @@ public class BoardController {
     private final BoardService boardService;
 
 
-    @PostMapping("/save")
+    @PostMapping("/register")
     public ResponseEntity<?> register(@ModelAttribute BoardDTO dto){
 
         try {
-            boardService.saveBoard(dto);
+            boardService.registerBoard(dto);
             return ResponseEntity.ok(200);
 
         } catch (IOException e) {
