@@ -35,7 +35,7 @@ public class BoardService {
     @Value("${file.upload-dir}")
     private String imagesURL;
 
-    public void saveBoard(BoardDTO dto) throws IOException {
+    public void registerBoard(BoardDTO dto) throws IOException {
         //dto로 데이터를 넘겨 받고 해당 유저 및 게시글이 있는지 확인
         Optional<Member> memberId = memberRepository.findById(dto.getMemberId());
         Optional<BigBoard> bigBoardId = bigBoardRepository.findById(dto.getBigBoardId());
@@ -80,15 +80,33 @@ public class BoardService {
         Board board = boardRepository.findById(dto.getId())
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 게시글입니다."));
 
-        // 기존 이미지 리스트 복사
-        List<String> updatedImages = new ArrayList<>(board.getImageURL());
+        // 남길 이미지 목록 (클라이언트에서 보냄)
+        List<String> remainImages = Optional.ofNullable(dto.getRemainImages()).orElse(new ArrayList<>());
 
-        // 새 이미지 업로드 처리
+        // 기존 이미지(DB에 있는) 중 삭제해야 할 파일 찾기
+        List<String> deleteTargets = new ArrayList<>();
+        for (String oldImage : board.getImageURL()) {
+            if (!remainImages.contains(oldImage)) {
+                deleteTargets.add(oldImage);
+            }
+        }
+
+        // 실제 파일 삭제
+        for (String fileName : deleteTargets) {
+            Path path = Paths.get(imagesURL, fileName);
+            Files.deleteIfExists(path);
+        }
+
+        // 현재 유지할 이미지 목록들 복사.
+        List<String> updatedImages = new ArrayList<>(remainImages);
+
+        // 기존 이미지가 비어있지 않으면 동작.
         if (dto.getImageURL() != null && !dto.getImageURL().isEmpty()) {
-
+            //경로에 이미지폴더가 없으면 생성.
             Files.createDirectories(Paths.get(imagesURL));
 
             for (MultipartFile file : dto.getImageURL()) {
+                // 파일이 빈값이면 넘어감
                 if (file.isEmpty()) continue;
 
                 String originalName = file.getOriginalFilename();
@@ -101,9 +119,12 @@ public class BoardService {
             }
         }
 
+
         //기존에 있던 이미지를 다 삭제
         board.getImageURL().clear();
         //새로운 이미지로 다시 채워넣음
+        //여기서 set말고 get을 사용하는 이유는 set은 단순히 기존 리스트 객체를 새로운 객체로 동작해서 JPA가 추적하지 않아 관리가 되지않음
+        //get은 JPA가 관리하던 리스트 객체 내부의 데이터만 수정을 하는거라 더티체킹이 일어나게됨
         board.getImageURL().addAll(updatedImages);
         // 엔티티 내용 수정
         board.changeBoard(dto.getTitle(), dto.getContent(), dto.getVideoURL(), updatedImages);
@@ -125,13 +146,22 @@ public class BoardService {
         Optional<Board> findBoard = boardRepository.findById(id);
         Board board = findBoard.orElseThrow(() -> new NoSuchElementException("존재하지 않는 게시글입니다."));
 
-        //빌더패턴으로 바꾸면 더 깔끔해 보일듯.
-        return new BoardResponseDTO(board.getId(),board.getMember().getId(), board.getBigBoard().getId(), board.getTitle(), board.getContent(), board.getVideoURL(), board.getImageURL());
+        //응답용 DTO를 만들어 객체 반환.
+        return new BoardResponseDTO(
+                board.getId(),
+                board.getMember().getId(),
+                board.getBigBoard().getId(),
+                board.getTitle(),
+                board.getContent(),
+                board.getVideoURL(),
+                board.getImageURL());
     }
 
     public Page<BoardPageResponseDTO> pageList(Pageable pageable){
         Page<Board> list = boardRepository.findAll(pageable);
-       return list.map(board -> new BoardPageResponseDTO(board.getId(), board.getTitle(), board.getContent()));
+       return list.map(board -> new BoardPageResponseDTO(board.getId(),
+                                                                board.getTitle(),
+                                                                board.getContent()));
     }
 
     public void deleteBoard(Long id) throws IOException{

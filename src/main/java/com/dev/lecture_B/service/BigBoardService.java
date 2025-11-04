@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 public class BigBoardService {
     private final BigBoardRepository bigBoardRepository;
 
-    public BigBoardDTO save(BigBoardDTO bigBoardDTO){
+    public BigBoardDTO register(BigBoardDTO bigBoardDTO){
         BigBoard bigBoard = new BigBoard(bigBoardDTO.getName());
         bigBoardRepository.save(bigBoard);
 

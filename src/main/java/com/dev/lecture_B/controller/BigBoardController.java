@@ -15,10 +15,10 @@ import java.util.List;
 public class BigBoardController {
     private final BigBoardService bigBoardService;
 
-    @PostMapping("/create")
+    @PostMapping("/register")
     public ResponseEntity<?> createBigBoard(@RequestBody BigBoardDTO dto){
 
-        bigBoardService.save(dto);
+        bigBoardService.register(dto);
 
 
         return ResponseEntity.ok().body(dto);
